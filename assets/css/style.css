@@ -4,6 +4,7 @@
 
 h1 {
     font-size: 30px !important;
+    font-weight: bold;
 }
 
 p {
@@ -20,7 +21,7 @@ button {
     background-color: plum;
     border: 2px solid purple;
     border-radius: 5px;
-    max-width: fit-content;
+    width: fit-content;
     font-size: 15px;
 }
 
@@ -32,7 +33,7 @@ main {
 .container {
     position: fixed;
     top: 100px;
-    width: 75%;
+    width: 60%;
 }
 
 .default {
@@ -54,9 +55,14 @@ main {
     display: block;
 }
 
-.question-section, ul {
+.question-section, ul, .endgame {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.endgame {
+    border: 4px pink solid;
+    padding: 5px 0px 5px 15px;
+    border-radius: 5px;
 }

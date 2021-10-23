@@ -1,5 +1,5 @@
 // Global variables
-var hiScoreBtn = document.querySelector(".high-score-button");
+var highscoreBtn = document.querySelector(".high-score-button");
 var timeEl = document.querySelector("span");
 var containerDivEl = document.querySelector(".container");
 var splashTextEl = document.querySelector(".default");
@@ -70,10 +70,15 @@ var askedQuestions = [];
 // Maybe these can be stored locally?
 var score = 0;
 
+function init() {
+    resetGame();
+
+}
+
 // Runs when Start button is pressed
 function startGame() {
     splashTextEl.setAttribute("class", "default hidden");
-    hiScoreBtn.setAttribute("class", ".high-score-button hidden")
+    highscoreBtn.setAttribute("class", ".high-score-button hidden")
     gameInProgress = true;
     countdown();
     populateQuestion();
@@ -91,7 +96,7 @@ function countdown() {
         }
         if (timeLeft === 0 || timeLeft < 0 || !gameInProgress) {
             clearInterval(timeInterval);
-            resetGame();
+            endgame();
         }
     }, 1000);
 }
@@ -171,7 +176,7 @@ function checkAnswer(event) {
     // Checks to see if chosen answer was correct
     if (chosenAnswer.className.includes("correct")) {
         score++;
-        removeQuestion();
+        removeLastElements();
         populateQuestion();
     } else {
         timeLeft = timeLeft - 10;
@@ -184,27 +189,93 @@ function checkAnswer(event) {
     }
 }
 
-function removeQuestion() {
-    while (questionSectionEl.children.length !== 0) {
-        questionSectionEl.removeChild(questionSectionEl.lastElementChild);
+// Removes all elements from container div except for splash text
+function removeLastElements() {
+    var lastElement = containerDivEl.lastElementChild
+    if (containerDivEl.children.length > 1) {
+        while (lastElement.children.length !== 0) {
+            lastElement.removeChild(lastElement.lastElementChild);
+        }
+        lastElement.remove();
     }
-    questionSectionEl.remove();
 }
 
 // Restores page to default functionality
 function resetGame() {
     splashTextEl.setAttribute("class", "default");
-    hiScoreBtn.setAttribute("class", ".high-score-button")
-    removeQuestion();
+    highscoreBtn.setAttribute("class", ".high-score-button")
+    removeLastElements();
     timeLeft = 0;
+    score = 0;
     setTime();
     questionArray = questionArray.concat(askedQuestions);
     askedQuestions = [];
     gameInProgress = false;
 }
 
+// Creates HTML elements showing final score and input field for initials to be saved to local storage
+function endgame() {
+    removeLastElements();
+    var endgameContentEl = document.createElement("section");
+    endgameContentEl.setAttribute("class", "endgame");
+
+    var endgameTitleEl = document.createElement("h1");
+    endgameTitleEl.textContent = "All done!"
+    var endgameMessageEl = document.createElement("p");
+    endgameMessageEl.textContent = "Your final score is: " + score;
+    var initialInputEl = document.createElement("input");
+    initialInputEl.setAttribute("placeholder", "Enter Your Intials Here");
+    var initialSubmitBtn = document.createElement("button")
+    initialSubmitBtn.textContent = "Submit"
+
+    containerDivEl.append(endgameContentEl);
+    endgameContentEl.append(endgameTitleEl);
+    endgameContentEl.append(endgameMessageEl);
+    endgameContentEl.append(initialInputEl);
+    endgameContentEl.append(initialSubmitBtn);
+
+    initialSubmitBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (initialInputEl.value !== "") {
+            var newHighscoreEntry = [{
+                highscore: score,
+                intials: initialInputEl.value.trim()
+            }]
+
+            if (localStorage.getItem("highscores") === null) {
+                localStorage.setItem("highscores", JSON.stringify(newHighscoreEntry));
+            } else {
+                var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
+                console.log(storedHighscores);
+
+                highscoreArray = storedHighscores.concat(newHighscoreEntry);
+                console.log(highscoreArray);
+                localStorage.setItem("highscores", JSON.stringify(highscoreArray));
+            }
+            resetGame();
+            // populateHighscore();
+        } else {
+            alert("Please enter your initials");
+        }
+    });
+}
+
+function submitHighscore(event) {
+    event.preventDefault();
+
+
+
+
+    resetGame();
+}
+
+function populateHighscore() {
+
+}
+
 // Event listeners
 startBtn.addEventListener("click", startGame);
+highscoreBtn.addEventListener("click", populateHighscore());
 
-
+init();
 
