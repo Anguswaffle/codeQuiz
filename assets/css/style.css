@@ -2,10 +2,43 @@
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;
 }
 
+h1 {
+    font-size: 30px !important;
+}
+
+p {
+    font-size: 20px !important;
+}
+
 header {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+}
+
+button {
+    background-color: plum;
+    border: 2px solid purple;
+    border-radius: 5px;
+    max-width: fit-content;
+    font-size: 15px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    position: fixed;
+    top: 100px;
+    width: 75%;
+}
+
+.default {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hidden {
@@ -13,10 +46,17 @@ header {
 }
 
 .question {
-    font-size: 50px;
+    font-size: 30px;
 }
 
 .answer {
     font-size: 20px;
     display: block;
+}
+
+.question-section, ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
