@@ -62,6 +62,8 @@ var questionArray = [question0, question1, question2, question3, question4];
 // for(var i = 1; questioni !== undefined ; i++){
 //     questionArray.push(questioni);
 // }
+
+// Empty array to store previously asked questions
 var askedQuestions = [];
 
 
@@ -77,60 +79,26 @@ function startGame() {
     populateQuestion();
 }
 
+// Starts countdown clock
+function countdown() {
+    timeLeft = 90;
+    setTime();
+
+    var timeInterval = setInterval(function () {
+        if (timeLeft > 0) {
+            timeLeft--;
+            setTime();
+        }
+        if (timeLeft === 0 || timeLeft < 0 || !gameInProgress) {
+            clearInterval(timeInterval);
+            resetGame();
+        }
+    }, 1000);
+}
 
 // Assigns timeLeft to HTML element
 function setTime() {
     timeEl.textContent = timeLeft;
-}
-
-// Generates random number
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
-
-// Returns a random question from the questionArray
-function getRandomQuestion() {
-    // Removes random question from questionArray, indexed at 0 in returned array
-    var newQuestion = questionArray.splice(getRandomInt(questionArray.length), 1)[0];
-    // Adds question to askedQuestions array
-    askedQuestions.push(newQuestion);
-    return newQuestion;
-}
-
-function removeQuestion() {
-    while (questionSectionEl.children.length !== 0) {
-        questionSectionEl.removeChild(questionSectionEl.lastElementChild);
-    }
-    questionSectionEl.remove();
-}
-
-function checkAnswer(event) {
-    // event.preventDefault();
-    var chosenAnswer = event.target;
-
-    // Checks to see if chosen answer was correct
-    if (chosenAnswer.className.includes("correct")) {
-        score++;
-        removeQuestion();
-        populateQuestion();
-    } else {
-        timeLeft = timeLeft - 10;
-        if (timeLeft < 0) {
-            timeLeft = 0;
-        }
-        setTime();
-    }
-}
-
-// Resets game to default
-function resetGame() {
-    splashTextEl.setAttribute("class", "default");
-    removeQuestion();
-    timeLeft = 0;
-    setTime();
-    questionArray = questionArray.concat(askedQuestions);
-    askedQuestions = [];
-    gameInProgress = false;
 }
 
 // Makes new HTML elements based on a retrieved question object from questionArray
@@ -150,6 +118,7 @@ function populateQuestion() {
         questionSectionEl.append(answerListEl);
         questionSectionEl.className = "question-section";
 
+        // Retrieves random question from questionArray
         var nextQuestion = getRandomQuestion();
         var propertyNames = Object.getOwnPropertyNames(nextQuestion);
         var qstnsAndAnswrs = Object.values(nextQuestion);
@@ -177,22 +146,62 @@ function populateQuestion() {
     }
 }
 
-function countdown() {
-    timeLeft = 90;
-    setTime();
-
-    var timeInterval = setInterval(function () {
-        if (timeLeft > 0) {
-            timeLeft--;
-            setTime();
-        }
-        if (timeLeft === 0 || !gameInProgress) {
-            clearInterval(timeInterval);
-            resetGame();
-        }
-    }, 1000);
+// Generates random number, used to retrieve a random question
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }
 
+// Returns a random question from the questionArray
+function getRandomQuestion() {
+    // Removes random question from questionArray, indexed at 0 in returned array
+    var newQuestion = questionArray.splice(getRandomInt(questionArray.length), 1)[0];
+    // Adds question to askedQuestions array
+    askedQuestions.push(newQuestion);
+    return newQuestion;
+}
+
+// Answer buttons contain an eventListener with this function
+// Checks to see if correct answer was chosen
+// If so, question is removed and new question populates
+// If not, time is deducted
+function checkAnswer(event) {
+    // event.preventDefault();
+    var chosenAnswer = event.target;
+
+    // Checks to see if chosen answer was correct
+    if (chosenAnswer.className.includes("correct")) {
+        score++;
+        removeQuestion();
+        populateQuestion();
+    } else {
+        timeLeft = timeLeft - 10;
+
+        // If timeLeft becomes less than 0, timeLeft is set to 0
+        if (timeLeft < 0) {
+            timeLeft = 0;
+        }
+        setTime();
+    }
+}
+
+function removeQuestion() {
+    while (questionSectionEl.children.length !== 0) {
+        questionSectionEl.removeChild(questionSectionEl.lastElementChild);
+    }
+    questionSectionEl.remove();
+}
+
+// Restores page to default functionality
+function resetGame() {
+    splashTextEl.setAttribute("class", "default");
+    hiScoreBtn.setAttribute("class", ".high-score-button")
+    removeQuestion();
+    timeLeft = 0;
+    setTime();
+    questionArray = questionArray.concat(askedQuestions);
+    askedQuestions = [];
+    gameInProgress = false;
+}
 
 // Event listeners
 startBtn.addEventListener("click", startGame);
