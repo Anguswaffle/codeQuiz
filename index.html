@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/reset.css"/>
-    <link rel="stylesheet" href="./assets/css/style.css"/>
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Code Quiz</title>
 </head>
+
 <body>
     <header>
-        <button type="button">View Highscores</button>
-        <p>Time Left:</p>
+        <button type="button" class="high-score-button">View Highscores</button>
+        <p>Timer: <span class="clock">0</span></p>
     </header>
 
     <main>
-        <h1>
-            Welcome To Code Quiz
-        </h1>
-        <p>
-            You will be given 90 seconds to answer as many questions as you can. You will lose 5 seconds for each incorrect answer. After your time ends, you will be prompted to enter your intials to submit your highscore. 
-        </p>
-        <button type="button">Start Quiz</button>
+        <div class="container">
+            <div class="default">
+                <h1>
+                    Welcome To Code Quiz
+                </h1>
+                <p>
+                    Test your code knowledge.
+                </p>
+                <button type="button" class="start-button">Start Quiz</button>
+            </div>
+        </div>
     </main>
 
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
