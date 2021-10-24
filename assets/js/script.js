@@ -260,8 +260,8 @@ function endgame() {
                 highscoreArray.sort(function (a, b) {
                     if (a.highscore > b.highscore) return -1;
                     if (a.highscore < b.highscore) return 1;
-                    if (a.time < b.time) return -1;
-                    if (a.time > b.time) return 1;
+                    if (a.time > b.time) return -1;
+                    if (a.time < b.time) return 1;
                 }
                 );
 
