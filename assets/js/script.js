@@ -9,6 +9,7 @@ var timeLeft;
 var gameInProgress = false;
 var score = 0;
 
+
 // Question objects
 
 // Template for new questions
@@ -68,6 +69,9 @@ var questionArray = [question0, question1, question2, question3, question4, ques
 // for(var i = 1; questioni !== undefined ; i++){
 //     questionArray.push(questioni);
 // }
+
+// Questions left
+var questionsLeft = questionArray.length;
 
 // Empty array to store previously asked questions
 var askedQuestions = [];
@@ -159,6 +163,7 @@ function getRandomQuestion() {
     var newQuestion = questionArray.splice(getRandomInt(questionArray.length), 1)[0];
     // Adds question to askedQuestions array
     askedQuestions.push(newQuestion);
+    questionsLeft--;
     return newQuestion;
 }
 
@@ -175,6 +180,7 @@ function checkAnswer(event) {
         score++;
         removeLastElements();
         populateQuestion();
+
     } else {
         timeLeft = timeLeft - 10;
 
@@ -197,14 +203,14 @@ function removeLastElements() {
     }
 }
 
-// Restores page to default functionality
+// Restores page to splash
 function resetGame() {
     splashTextEl.setAttribute("class", "default");
     containerDivEl.setAttribute("class", "container")
     highscoreBtn.setAttribute("class", ".high-score-button")
     removeLastElements();
-    timeLeft = 0;
     score = 0;
+    timeLeft = 0;
     setTime();
     questionArray = questionArray.concat(askedQuestions);
     askedQuestions = [];

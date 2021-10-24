@@ -3,12 +3,20 @@
 }
 
 h1 {
-    font-size: 30px !important;
+    font-size: 30px;
     font-weight: bold;
 }
 
 p {
     font-size: 20px !important;
+}
+
+header h1 {
+    font-size: 45px;
+}
+
+header button{
+    font-size: 30px;
 }
 
 header {
@@ -21,8 +29,8 @@ button {
     background-color: plum;
     border: 2px solid purple;
     border-radius: 5px;
-    width: fit-content;
-    font-size: 15px;
+    margin: 5px;
+    font-size: 18px;
 }
 
 main {
