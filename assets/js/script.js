@@ -70,9 +70,6 @@ var questionArray = [question0, question1, question2, question3, question4, ques
 //     questionArray.push(questioni);
 // }
 
-// Questions left
-var questionsLeft = questionArray.length;
-
 // Empty array to store previously asked questions
 var askedQuestions = [];
 
@@ -163,7 +160,6 @@ function getRandomQuestion() {
     var newQuestion = questionArray.splice(getRandomInt(questionArray.length), 1)[0];
     // Adds question to askedQuestions array
     askedQuestions.push(newQuestion);
-    questionsLeft--;
     return newQuestion;
 }
 
