@@ -66,3 +66,9 @@ main {
     padding: 5px 0px 5px 15px;
     border-radius: 5px;
 }
+
+.highscores {
+    border: 4px teal solid;
+    padding: 20px 0px 30px 15px;
+    border-radius: 5px;
+}

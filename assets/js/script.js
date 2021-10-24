@@ -4,10 +4,10 @@ var timeEl = document.querySelector("span");
 var containerDivEl = document.querySelector(".container");
 var splashTextEl = document.querySelector(".default");
 var startBtn = document.querySelector(".start-button");
-var questionSectionEl;
 
 var timeLeft;
 var gameInProgress = false;
+var score = 0;
 
 // Question objects
 
@@ -53,10 +53,16 @@ var question4 = {
     correctAnswer: "True",
     falseAnswer1: "False",
 }
-
+var question5 = {
+    question: "Who gets Flexbox properties when a Flexbox is declared?",
+    correctAnswer: "The declared container and its children",
+    falseAnswer1: "Flex who?",
+    falseAnswer2: "The declared container",
+    falseAnswer3: "The declared container's children"
+}
 
 // Array of questions
-var questionArray = [question0, question1, question2, question3, question4];
+var questionArray = [question0, question1, question2, question3, question4, question5];
 
 // Tried making a loop to push each question into the array, didn't work. Will work on it later.
 // for(var i = 1; questioni !== undefined ; i++){
@@ -65,15 +71,6 @@ var questionArray = [question0, question1, question2, question3, question4];
 
 // Empty array to store previously asked questions
 var askedQuestions = [];
-
-
-// Maybe these can be stored locally?
-var score = 0;
-
-function init() {
-    resetGame();
-
-}
 
 // Runs when Start button is pressed
 function startGame() {
@@ -113,7 +110,7 @@ function populateQuestion() {
     if (questionArray.length > 0) {
 
         // New HTML elements
-        questionSectionEl = document.createElement("section");
+        var questionSectionEl = document.createElement("section");
         var questionEl = document.createElement("h1")
         var answerListEl = document.createElement("ul")
 
@@ -203,6 +200,7 @@ function removeLastElements() {
 // Restores page to default functionality
 function resetGame() {
     splashTextEl.setAttribute("class", "default");
+    containerDivEl.setAttribute("class", "container")
     highscoreBtn.setAttribute("class", ".high-score-button")
     removeLastElements();
     timeLeft = 0;
@@ -222,7 +220,7 @@ function endgame() {
     var endgameTitleEl = document.createElement("h1");
     endgameTitleEl.textContent = "All done!"
     var endgameMessageEl = document.createElement("p");
-    endgameMessageEl.textContent = "Your final score is: " + score;
+    endgameMessageEl.textContent = "Your final score is: " + score + "\nYou had " + timeLeft + " seconds on the clock.";
     var initialInputEl = document.createElement("input");
     initialInputEl.setAttribute("placeholder", "Enter Your Intials Here");
     var initialSubmitBtn = document.createElement("button")
@@ -236,46 +234,97 @@ function endgame() {
 
     initialSubmitBtn.addEventListener("click", function (event) {
         event.preventDefault();
-        if (initialInputEl.value !== "") {
+
+        // Checks to see if input field is empty
+        if (initialInputEl.value.trim() !== "") {
             var newHighscoreEntry = [{
                 highscore: score,
-                intials: initialInputEl.value.trim()
+                time: timeLeft,
+                initials: initialInputEl.value.trim()
             }]
 
             if (localStorage.getItem("highscores") === null) {
                 localStorage.setItem("highscores", JSON.stringify(newHighscoreEntry));
             } else {
-                var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
-                console.log(storedHighscores);
+                var storedHighscores = retrieveScores();
 
-                highscoreArray = storedHighscores.concat(newHighscoreEntry);
-                console.log(highscoreArray);
+                var highscoreArray = storedHighscores.concat(newHighscoreEntry);
+
+                // Sorts highscores from highest to lowest score and then from most to least remaining time
+                highscoreArray.sort(function (a, b) {
+                    if (a.highscore > b.highscore) return -1;
+                    if (a.highscore < b.highscore) return 1;
+                    if (a.time < b.time) return -1;
+                    if (a.time > b.time) return 1;
+                }
+                );
+
                 localStorage.setItem("highscores", JSON.stringify(highscoreArray));
             }
-            resetGame();
-            // populateHighscore();
+            // resetGame();
+            populateHighscore();
         } else {
             alert("Please enter your initials");
         }
     });
 }
 
-function submitHighscore(event) {
-    event.preventDefault();
-
-
-
-
-    resetGame();
+function retrieveScores() {
+    return JSON.parse(localStorage.getItem("highscores"));
 }
 
 function populateHighscore() {
+    splashTextEl.setAttribute("class", "default hidden");
+    highscoreBtn.setAttribute("class", ".high-score-button hidden")
+    containerDivEl.setAttribute("class", "container highscores")
+    removeLastElements();
+
+    // Makes highscore HTML elements
+    var highscoreFieldEl = document.createElement("content");
+    var highscoreTitleEl = document.createElement("h1");
+    var highscoreListEl = document.createElement("ol");
+    var clearHighscoreBtn = document.createElement("button");
+    var returnHomeBtn = document.createElement("button");
+
+    // Text content and class attributes
+    highscoreTitleEl.textContent = "Highscores";
+    clearHighscoreBtn.textContent = "Clear highscores";
+    returnHomeBtn.textContent = "Return home";
+
+    // Appending
+    containerDivEl.append(highscoreFieldEl);
+    highscoreFieldEl.append(highscoreTitleEl);
+    highscoreFieldEl.append(highscoreListEl);
+    highscoreFieldEl.append(returnHomeBtn);
+    highscoreFieldEl.append(clearHighscoreBtn);
+
+    var highscoreArray = retrieveScores();
+    if (highscoreArray !== null) {
+        for (var i = 0; highscoreArray.length > i; i++) {
+            var newLiEl = document.createElement("li");
+            var retrievedStats = highscoreArray[i];
+
+            // Ordered list automatic numbering wasn't working so I manually added rankings to beginning of string
+            newLiEl.textContent = i + 1 + ". " + retrievedStats.initials + " - " + retrievedStats.highscore + " with " + retrievedStats.time + " seconds left";
+            highscoreListEl.append(newLiEl);
+        }
+    }
+
+    returnHomeBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        resetGame();
+    })
+
+    clearHighscoreBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        localStorage.clear();
+        populateHighscore();
+    })
 
 }
 
 // Event listeners
 startBtn.addEventListener("click", startGame);
-highscoreBtn.addEventListener("click", populateHighscore());
+highscoreBtn.addEventListener("click", populateHighscore);
 
-init();
-
+resetGame();
