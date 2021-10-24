@@ -11,16 +11,6 @@ var score = 0;
 
 
 // Question objects
-
-// Template for new questions
-// var questionX = {
-//     question: "What is a question?",
-//     correctAnswer: "True",
-//     falseAnswer1: "False",
-//     falseAnswer2: "False",
-//     falseAnswer3: "False"
-// }
-
 var question0 = {
     question: "The className property of the Element interface gets and sets the value of the _____ attribute of the specified element.",
     correctAnswer: "Class",
@@ -195,12 +185,8 @@ function checkAnswer(event) {
 
 // Removes all elements from container div except for splash text
 function removeLastElements() {
-    var lastElement = containerDivEl.lastElementChild
-    if (containerDivEl.children.length > 1) {
-        while (lastElement.children.length !== 0) {
-            lastElement.removeChild(lastElement.lastElementChild);
-        }
-        lastElement.remove();
+    for (var i = 1; containerDivEl.children.length > i; i ) {
+        containerDivEl.children[i].remove();
     }
 }
 
@@ -298,7 +284,7 @@ function populateHighscore() {
     clearHighscoreBtn.textContent = "Clear highscores";
     returnHomeBtn.textContent = "Return home";
 
-    // Appending
+    // Appending to HTML
     containerDivEl.append(highscoreFieldEl);
     highscoreFieldEl.append(highscoreTitleEl);
     highscoreFieldEl.append(highscoreListEl);
@@ -316,18 +302,17 @@ function populateHighscore() {
             highscoreListEl.append(newLiEl);
         }
     }
-
+    // Adds eventListener to Return Home button
     returnHomeBtn.addEventListener("click", function (event) {
         event.preventDefault();
         resetGame();
     })
-
+    // Adds eventListener to Clear Highscore button
     clearHighscoreBtn.addEventListener("click", function (event) {
         event.preventDefault();
         localStorage.clear();
         populateHighscore();
     })
-
 }
 
 // Event listeners
