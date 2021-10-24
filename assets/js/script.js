@@ -121,26 +121,31 @@ function populateQuestion() {
         questionSectionEl.append(answerListEl);
         questionSectionEl.className = "question-section";
 
-        // Retrieves random question from questionArray
+        // Retrieves random question from questionArray and its property names and values are stored
         var nextQuestion = getRandomQuestion();
         var propertyNames = Object.getOwnPropertyNames(nextQuestion);
         var qstnsAndAnswrs = Object.values(nextQuestion);
-        questionEl.textContent = qstnsAndAnswrs[0];
-        questionEl.setAttribute("class", propertyNames[0]);
 
         // Creates answer buttons based on number of available answers in chosen object
-        for (var i = 1; i < propertyNames.length; i++) {
-            var newDiv = document.createElement("button")
-            newDiv.setAttribute("class", propertyNames[i] + " answer");
-            newDiv.textContent = qstnsAndAnswrs[i];
+        for (var i = 0; i < propertyNames.length; i++) {
 
-            // Randomly sorts answer buttons
-            if (getRandomInt(2) % 2) {
-                answerListEl.append(newDiv);
+            // Makes question 
+            if (i === 0) {
+                questionEl.textContent = qstnsAndAnswrs[i];
+                questionEl.setAttribute("class", propertyNames[i]);
             } else {
-                answerListEl.prepend(newDiv);
+                var newDiv = document.createElement("button")
+                newDiv.setAttribute("class", propertyNames[i] + " answer");
+                newDiv.textContent = qstnsAndAnswrs[i];
+
+                // Randomly sorts answer buttons
+                if (getRandomInt(2) % 2) {
+                    answerListEl.append(newDiv);
+                } else {
+                    answerListEl.prepend(newDiv);
+                }
+                newDiv.addEventListener("click", checkAnswer)
             }
-            newDiv.addEventListener("click", checkAnswer)
         }
 
         // If no questions remain, gameInProgress becomes false and timeInterval is cleared when it checks again
