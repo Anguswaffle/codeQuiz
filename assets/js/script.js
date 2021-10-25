@@ -246,6 +246,7 @@ function endgame() {
                     if (a.time < b.time) return 1;
                 }
                 );
+                // If highscore list becomes longer than 10, the lowest ranked entry is removed
                 while(highscoreArray.length > 10) highscoreArray.pop();
                 localStorage.setItem("highscores", JSON.stringify(highscoreArray));
             }
