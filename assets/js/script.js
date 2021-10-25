@@ -246,7 +246,7 @@ function endgame() {
                     if (a.time < b.time) return 1;
                 }
                 );
-
+                while(highscoreArray.length > 10) highscoreArray.pop();
                 localStorage.setItem("highscores", JSON.stringify(highscoreArray));
             }
             // resetGame();
