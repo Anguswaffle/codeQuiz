@@ -10,55 +10,49 @@ var gameInProgress = false;
 var score = 0;
 
 
-// Question objects
-var question0 = {
-    question: "The className property of the Element interface gets and sets the value of the _____ attribute of the specified element.",
-    correctAnswer: "Class",
-    falseAnswer1: "Style",
-    falseAnswer2: "ID",
-    falseAnswer3: "Type"
-}
-var question1 = {
-    question: "What is a method?",
-    correctAnswer: "A function which is a property of an object",
-    falseAnswer1: "Did you say meth head?",
-    falseAnswer2: "An object which is a function of a property",
-    falseAnswer3: "A property which is an object of a function"
-}
-var question2 = {
-    question: "What is a function?",
-    correctAnswer: "A snippet that can be called by other code or by itself or by a variable that refers to the function",
-    falseAnswer1: "Conjunction junction, what's your function?",
-    falseAnswer2: "A snippet that cannot be called by other code or by itself",
-    falseAnswer3: "Something terrible"
-}
-var question3 = {
-    question: "What is an argument?",
-    correctAnswer: "An argument is a value passed as input into a function",
-    falseAnswer1: "Nothing much, what's an argument-a you?",
-    falseAnswer2: "Nothing",
-    falseAnswer3: "Don't click this"
-}
-var question4 = {
-    question: "You can use CSS to style an HTML page",
-    correctAnswer: "True",
-    falseAnswer1: "False",
-}
-var question5 = {
-    question: "Who gets Flexbox properties when a Flexbox is declared?",
-    correctAnswer: "The declared container and its children",
-    falseAnswer1: "Flex who?",
-    falseAnswer2: "The declared container",
-    falseAnswer3: "The declared container's children"
-}
-
-// Array of questions
-var questionArray = [question0, question1, question2, question3, question4, question5];
-
-// Tried making a loop to push each question into the array, didn't work. Will work on it later.
-// for(var i = 1; questioni !== undefined ; i++){
-//     questionArray.push(questioni);
-// }
+// Array of question objects
+var questionArray = [
+    {
+        question: "The className property of the Element interface gets and sets the value of the _____ attribute of the specified element.",
+        correctAnswer: "Class",
+        falseAnswer1: "Style",
+        falseAnswer2: "ID",
+        falseAnswer3: "Type"
+    },
+    {
+        question: "What is a method?",
+        correctAnswer: "A function which is a property of an object",
+        falseAnswer1: "Did you say meth head?",
+        falseAnswer2: "An object which is a function of a property",
+        falseAnswer3: "A property which is an object of a function"
+    },
+    {
+        question: "What is a function?",
+        correctAnswer: "A snippet that can be called by other code or by itself or by a variable that refers to the function",
+        falseAnswer1: "Conjunction junction, what's your function?",
+        falseAnswer2: "A snippet that cannot be called by other code or by itself",
+        falseAnswer3: "Something terrible"
+    },
+    {
+        question: "What is an argument?",
+        correctAnswer: "An argument is a value passed as input into a function",
+        falseAnswer1: "Nothing much, what's an argument-a you?",
+        falseAnswer2: "Nothing",
+        falseAnswer3: "Don't click this"
+    },
+    {
+        question: "You can use CSS to style an HTML page",
+        correctAnswer: "True",
+        falseAnswer1: "False",
+    },
+    {
+        question: "Who gets Flexbox properties when a Flexbox is declared?",
+        correctAnswer: "The declared container and its children",
+        falseAnswer1: "Flex who?",
+        falseAnswer2: "The declared container",
+        falseAnswer3: "The declared container's children"
+    }
+]
 
 // Empty array to store previously asked questions
 var askedQuestions = [];
@@ -185,7 +179,7 @@ function checkAnswer(event) {
 
 // Removes all elements from container div except for splash text
 function removeLastElements() {
-    for (var i = 1; containerDivEl.children.length > i; i ) {
+    for (var i = 1; containerDivEl.children.length > i; i) {
         containerDivEl.children[i].remove();
     }
 }
