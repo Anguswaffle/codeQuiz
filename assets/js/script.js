@@ -9,6 +9,7 @@ var timeLeft;
 var gameInProgress = false;
 var score = 0;
 
+var correctAnswer = "";
 
 // Array of question objects
 var questionArray = [
@@ -119,7 +120,7 @@ function populateQuestion() {
                 questionEl.setAttribute("class", propertyNames[i]);
             } else {
                 var newDiv = document.createElement("button")
-                newDiv.setAttribute("class", propertyNames[i] + " answer");
+                newDiv.setAttribute("class", "answer");
                 newDiv.textContent = qstnsAndAnswrs[i];
 
                 // Randomly sorts answer buttons
@@ -149,6 +150,8 @@ function getRandomQuestion() {
     var newQuestion = questionArray.splice(getRandomInt(questionArray.length), 1)[0];
     // Adds question to askedQuestions array
     askedQuestions.push(newQuestion);
+    // Saves correct answer as variable
+    correctAnswer = newQuestion.correctAnswer;
     return newQuestion;
 }
 
@@ -157,15 +160,13 @@ function getRandomQuestion() {
 // If so, question is removed and new question populates
 // If not, time is deducted
 function checkAnswer(event) {
-    // event.preventDefault();
     var chosenAnswer = event.target;
 
     // Checks to see if chosen answer was correct
-    if (chosenAnswer.className.includes("correct")) {
+    if (chosenAnswer.textContent === correctAnswer) {
         score++;
         removeLastElements();
         populateQuestion();
-
     } else {
         timeLeft = timeLeft - 10;
 
